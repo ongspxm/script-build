@@ -1,0 +1,7 @@
+../pathlib.py
+../pathlib.pyc
+./
+SOURCES.txt
+dependency_links.txt
+top_level.txt
+PKG-INFO
