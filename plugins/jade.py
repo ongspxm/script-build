@@ -1,7 +1,10 @@
 import pyjade
 
 def extJade(content):
-    return pyjade.simple_convert(content)
+    content = pyjade.simple_convert(content)
+    return ''.join(map(lambda x: x.strip(), content.split('\n')))
+
+
 
 def init(funcs, convs):
     funcs['jade'] = extJade

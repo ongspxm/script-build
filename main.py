@@ -22,7 +22,7 @@ from scss import Compiler as scss
 src = './src'
 dst = './build'
 modification_db = 'spuild.db'
-skipped = 'swp swo'.split()
+skipped = ''.split()
 
 ext_funcs = {}
 ext_convs = {}
@@ -59,8 +59,13 @@ def main(clean=False, concat=False):
             dname = os.path.join(root.replace(src, dst, 1), name)
             ext = name.split('.')[-1]
             
-            if ext in skipped: continue
+            ### vim swap files
+            if len(ext)==3 and ext[:2]=='sw': continue
             
+            ### skipped files
+            if ext in skipped: continue
+
+
             ### Skipped if modified time change pass
             time = modification_times.get(sname)
             modification_times[sname] = os.path.getmtime(sname)
@@ -87,7 +92,7 @@ def main(clean=False, concat=False):
 
             with open(dname, 'w') as fout:
                 fout.write(content)
-            
+           
             if concat and (ext=='js' or ext=='css'):
                 concat_str[ext] += '\n\n'+content
    
