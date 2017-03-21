@@ -29,7 +29,7 @@ ext_convs = {}
 def loadPlugins():
     path_plugins = os.path.join(path, 'plugins')
     plugins = [f for f in os.listdir(path_plugins) if f.endswith('.py')]
-    
+
     for plugin in plugins:
         path_plugin = os.path.join(path_plugins, plugin)
         plugin = imp.load_source(plugin[:-3], path_plugin)
@@ -37,7 +37,7 @@ def loadPlugins():
 
 def cleanDst():
     pickle.dump({}, open(modification_db, 'wb'))
-    
+
     if not os.path.isdir(dst):
         return
 
@@ -50,7 +50,7 @@ def main(clean=False, concat=False):
     modification_times = {}
     if os.path.isfile(modification_db):
         modification_times = pickle.load(open(modification_db, 'rb'))
-    
+
     concat_str = dict(js='', css='')
 
     for root, dirs, files in os.walk(src):
@@ -58,10 +58,10 @@ def main(clean=False, concat=False):
             sname = os.path.join(root, name)
             dname = os.path.join(root.replace(src, dst, 1), name)
             ext = name.split('.')[-1]
-            
+
             ### vim swap files
             if len(ext)==3 and ext[:2]=='sw': continue
-            
+
             ### skipped files
             if ext in skipped: continue
 
@@ -71,9 +71,9 @@ def main(clean=False, concat=False):
             modification_times[sname] = os.path.getmtime(sname)
             if time==modification_times[sname] and not concat:
                 continue
-            
+
             print 'Processing', sname
-            
+
             content = None
             func = ext_funcs.get(ext)
             with open(sname, 'r') as fin:
@@ -84,18 +84,17 @@ def main(clean=False, concat=False):
 
             dname = '.'.join(dname.split('.')[:-1])+'.'+ext
             ddir = '/'.join(dname.split('/')[:-1])
-            
-            try:
+
+
+            if not os.path.exists(ddir):
                 os.makedirs(ddir)
-            except OSError:
-                if not os.path.isdir(ddir): raise
 
             with open(dname, 'w') as fout:
                 fout.write(content)
-           
+
             if concat and (ext=='js' or ext=='css'):
                 concat_str[ext] += '\n\n'+content
-   
+
     ### Concat function
     fname = os.path.join(dst, 'all.')
     for key in concat_str.keys():
@@ -112,7 +111,7 @@ Use -a to concat .js and .css files.
 Use -h to display this help message.
 '''
 
-if __name__=='__main__': 
+if __name__=='__main__':
     clean = False
     concat = False
 
@@ -123,6 +122,6 @@ if __name__=='__main__':
         concat = True
     if '-h' in args:
         print _USAGE
-    
+
     loadPlugins()
     main(clean, concat)
