@@ -65,7 +65,6 @@ def main(clean=False, concat=False):
             ### skipped files
             if ext in skipped: continue
 
-
             ### Skipped if modified time change pass
             time = modification_times.get(sname)
             modification_times[sname] = os.path.getmtime(sname)
