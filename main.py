@@ -24,6 +24,9 @@ dst = './build'
 modification_db = 'spuild.db'
 skipped = ''.split()
 
+gitPath = os.path.join(dst, '.git')
+tmpPath = './.gittmp'
+
 ext_funcs = {}
 ext_convs = {}
 def loadPlugins():
@@ -40,9 +43,17 @@ def cleanDst():
 
     if not os.path.isdir(dst):
         return
+    
+    # dun remove .git function
+    if os.path.isdir(gitPath):
+        shutil.move(gitPath, tmpPath)
 
     try: shutil.rmtree(dst)
     except: shutil.rmtree(dst)
+
+def resetRepo():
+    if os.path.isdir(tmpPath):
+        shutil.move(tmpPath, gitPath)
 
 def main(clean=False, concat=False):
     if clean: cleanDst()
@@ -102,6 +113,8 @@ def main(clean=False, concat=False):
                 fout.write(concat_str[key])
 
     pickle.dump(modification_times, open(modification_db, 'wb'))
+
+    if clean: resetRepo()
 
 _USAGE = '''
 Use -c to clean build directory before building.
