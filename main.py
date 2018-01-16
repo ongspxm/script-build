@@ -91,14 +91,14 @@ def main(clean=False, concat=False):
                 if func:
                     content = func(content)
                 ext = ext_convs.get(ext) or ext
-
-            dname = '.'.join(dname.split('.')[:-1])+'.'+ext
+            
+            if dname[1:].count('.'):
+                dname = '.'.join(dname.split('.')[:-1])+'.'+ext
             ddir = '/'.join(dname.split('/')[:-1])
 
-
-            if not os.path.exists(ddir):
+            if ddir and not os.path.exists(ddir):
                 os.makedirs(ddir)
-
+            
             with open(dname, 'w') as fout:
                 fout.write(content)
 
