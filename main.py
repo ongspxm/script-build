@@ -43,7 +43,7 @@ def cleanDst():
 
     if not os.path.isdir(dst):
         return
-    
+
     # dun remove .git function
     if os.path.isdir(gitPath):
         shutil.move(gitPath, tmpPath)
@@ -91,19 +91,19 @@ def main(clean=False, concat=False):
                 if func:
                     content = func(content)
                 ext = ext_convs.get(ext) or ext
-            
+
             if dname[1:].count('.'):
                 dname = '.'.join(dname.split('.')[:-1])+'.'+ext
             ddir = '/'.join(dname.split('/')[:-1])
 
             if ddir and not os.path.exists(ddir):
                 os.makedirs(ddir)
-            
+
             with open(dname, 'w') as fout:
-                fout.write(content)
+                fout.write(content+'\n')
 
             if concat and (ext=='js' or ext=='css'):
-                concat_str[ext] += '\n\n'+content
+                concat_str[ext] += '\n'+content+'\n'
 
     ### Concat function
     fname = os.path.join(dst, 'all.')
