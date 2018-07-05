@@ -99,8 +99,9 @@ def main(clean=False, concat=False):
             if ddir and not os.path.exists(ddir):
                 os.makedirs(ddir)
 
-            with open(dname, 'w') as fout:
-                fout.write(content+'\n')
+            if content:
+                with open(dname, 'w') as fout:
+                    fout.write(content+'\n')
 
             if concat and (ext=='js' or ext=='css'):
                 concat_str[ext] += '\n'+content+'\n'
