@@ -19,11 +19,10 @@ import pickle
 import pyjade
 from scss import Compiler as scss
 
-src = './src'
-dst = './build'
+src = 'src'
+dst = 'build'
 modification_db = 'spuild.db'
 skipped = ''.split()
-
 gitPath = os.path.join(dst, '.git')
 tmpPath = './.gittmp'
 
